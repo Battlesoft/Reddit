@@ -17,7 +17,7 @@ return new class extends Migration
             $table->integer('channel_id');
             $table->string('title');
             $table->string('link');
-            $table->boolean('approved');
+            $table->boolean('approved')->default(false);
             $table->timestamps();
         });
     }
