@@ -1,0 +1,3 @@
+[submodule "Proyecto-Reddit"]
+	path = Proyecto-Reddit
+	url = https://github.com/Battlesoft/Proyecto-Reddit.git
