@@ -15,7 +15,7 @@ class CommunityLinkController extends Controller
      */
     public function index()
     {
-        $links = CommunityLink::paginate(25);
+        $links = CommunityLink::where('approved', 1)->paginate(25);
         $channels = Channel::orderBy('title','asc')->get();
         return view('community/index', compact('links','channels'));
     }
@@ -34,38 +34,32 @@ class CommunityLinkController extends Controller
     public function store(Request $request)
     {
 
-        
-    // dd($request->all());
+        $data = $request->validate([
+            'title' => 'required|max:255',
+            'channel_id' => 'required|exists:channels,id',
+            'link' => 'required|unique:community_links|url|max:255', 
+            ]);
+           
+            $data['user_id'] = Auth::id();
+           
+           
+                
+        $approved = Auth::user()->trusted ? true : false;
+        $data['approved'] = $approved;
 
-    // dd($request->path());
-
-    // dd($request->url());
-
-    // return Response('Error', 404);
-
-
-     // dd($request);
-
-     $data = $request->validate([
-
-        'title' => 'required|max:255',
-       
-        'channel_id' => 'required|exists:channels,id',
-
-       
-        'link' => 'required|unique:community_links|url|max:255', 
-       
-       
-       
-        ]);
-       
-        $data['user_id'] = Auth::id();
-       
         CommunityLink::create($data);
-       
         return back();
 
-        // return redirect('/login')->with('success', 'Enlace enviado con éxito');
+
+
+    // dd($request->all());
+    // dd($request->path());
+    // dd($request->url());
+    // dd($request);
+
+    // return Response('Error', 404);
+    // return redirect('/login')->with('success', 'Enlace enviado con éxito');
+
     }
 
     /**
