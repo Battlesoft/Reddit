@@ -2,9 +2,12 @@
 
 @section('content')
     <div class="container">
+        @include('flash-message')
+        
         <div class="row">
             {{-- Left column to show all the links in the DB --}}
             <div class="col-md-8">
+                
                 <h1>Community</h1>
                 @if (count($links) === 0)
                     <p>No approved contributions yet</p>

@@ -25,7 +25,7 @@ class CommunityLinkController extends Controller
      */
     public function create()
     {
-        //
+        // 
     }
 
     /**
@@ -43,11 +43,24 @@ class CommunityLinkController extends Controller
             $data['user_id'] = Auth::id();
            
            
-                
-        $approved = Auth::user()->trusted ? true : false;
-        $data['approved'] = $approved;
+            $user = Auth::user();
 
-        CommunityLink::create($data);
+            $isTrusted = $user->isTrusted();
+            $approved = $isTrusted ? true : false;
+
+            
+
+            $data['user_id'] = Auth::id();
+            $data['approved'] = $approved;
+
+            CommunityLink::create($data);
+
+            if ($isTrusted) {
+                return redirect()->back()->with('success', 'El enlace se ha creado correctamente y se ha aprobado automáticamente.');
+            } else {
+                return redirect()->back()->with('info', 'El enlace se ha creado correctamente, pero está pendiente de aprobación.');
+            }
+
         return back();
 
 
