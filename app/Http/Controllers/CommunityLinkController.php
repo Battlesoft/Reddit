@@ -16,8 +16,9 @@ class CommunityLinkController extends Controller
     public function index()
     {
         $links = CommunityLink::where('approved', 1)->paginate(25);
-        $channels = Channel::orderBy('title','asc')->get();
-        return view('community/index', compact('links','channels'));
+        $links = CommunityLink::where('approved', true)->latest('updated_at')->paginate(25);
+        $channels = Channel::orderBy('title', 'asc')->get();
+        return view('community/index', compact('links', 'channels'));
     }
 
     /**
@@ -37,42 +38,54 @@ class CommunityLinkController extends Controller
         $data = $request->validate([
             'title' => 'required|max:255',
             'channel_id' => 'required|exists:channels,id',
-            'link' => 'required|unique:community_links|url|max:255', 
-            ]);
-           
-            $data['user_id'] = Auth::id();
-           
-           
-            $user = Auth::user();
+            'link' => 'required|unique:community_links|url|max:255',
+        ]);
 
-            $isTrusted = $user->isTrusted();
-            $approved = $isTrusted ? true : false;
+        $data['user_id'] = Auth::id();
 
-            
 
-            $data['user_id'] = Auth::id();
-            $data['approved'] = $approved;
+        $user = Auth::user();
 
-            CommunityLink::create($data);
+        $isTrusted = $user->isTrusted();
+        $approved = $isTrusted ? true : false;
 
-            if ($isTrusted) {
-                return redirect()->back()->with('success', 'El enlace se ha creado correctamente y se ha aprobado automáticamente.');
-            } else {
-                return redirect()->back()->with('info', 'El enlace se ha creado correctamente, pero está pendiente de aprobación.');
-            }
+
+
+        $data['user_id'] = Auth::id();
+        $data['approved'] = $approved;
+
+        CommunityLink::create($data);
+
+        if ($isTrusted) {
+            return redirect()->back()->with('success', 'El enlace se ha creado correctamente y se ha aprobado automáticamente.');
+        } else {
+            return redirect()->back()->with('info', 'El enlace se ha creado correctamente, pero está pendiente de aprobación.');
+        }
 
         return back();
 
 
 
-    // dd($request->all());
-    // dd($request->path());
-    // dd($request->url());
-    // dd($request);
+        // dd($request->all());
+        // dd($request->path());
+        // dd($request->url());
+        // dd($request);
 
-    // return Response('Error', 404);
-    // return redirect('/login')->with('success', 'Enlace enviado con éxito');
+        // return Response('Error', 404);
+        // return redirect('/login')->with('success', 'Enlace enviado con éxito');
 
+    }
+
+    protected static function hasAlreadyBeenSubmitted($link)
+    {
+        if ($existing = static::where('link', $link)->first()) {
+            if (Auth::user()->isTrusted()) {
+                $existing->touch();
+                $existing->save();
+            }
+            return true;
+        }
+        return false;
     }
 
     /**
