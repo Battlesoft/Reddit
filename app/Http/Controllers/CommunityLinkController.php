@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Link;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Channel;
+use App\Http\Requests\CommunityLinkForm;
 
 class CommunityLinkController extends Controller
 {
@@ -62,6 +63,8 @@ class CommunityLinkController extends Controller
             return redirect()->back()->with('info', 'El enlace se ha creado correctamente, pero está pendiente de aprobación.');
         }
 
+        $data = $request->validated();
+
         return back();
 
 
@@ -76,17 +79,6 @@ class CommunityLinkController extends Controller
 
     }
 
-    protected static function hasAlreadyBeenSubmitted($link)
-    {
-        if ($existing = static::where('link', $link)->first()) {
-            if (Auth::user()->isTrusted()) {
-                $existing->touch();
-                $existing->save();
-            }
-            return true;
-        }
-        return false;
-    }
 
     /**
      * Display the specified resource.
