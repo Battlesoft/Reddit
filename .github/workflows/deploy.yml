@@ -10,8 +10,8 @@ jobs:
         - name: Deploy 
         uses: appleboy/ssh-action@v0.1.8
         with:
-            host: 185.254.207.144
-            port: 22
-            username: arribi
+            host: 79.143.93.25
+            port: 2222
+            username: yeray
             keys: ${{secrets.PRIVATE_KEY}}
             script: "cd /var/www/html/laravelvps; git pull origin main; npm run build"
