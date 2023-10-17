@@ -13,5 +13,5 @@ jobs:
                 host: 79.143.93.25
                 port: 2222
                 username: yeray
-                keys: ${{secrets.PRIVATE_KEY}}
+                key: ${{secrets.PRIVATE_KEY}}
                 script: "cd /var/www/html/laravelvps; git pull origin main; npm run build"
