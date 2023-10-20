@@ -12,6 +12,11 @@ class User extends Authenticatable implements MustVerifyEmail
 {
     use HasApiTokens, HasFactory, Notifiable;
 
+    public function profile()
+    {
+        return $this->hasOne(Profile::class);
+    }
+    
     /**
      * The attributes that are mass assignable.
      *
@@ -44,9 +49,11 @@ class User extends Authenticatable implements MustVerifyEmail
     ];
 
 
+
+
     public function isTrusted()
-{
-    return $this->trusted;
-}
+    {
+        return $this->trusted;
+    }
 
 }
