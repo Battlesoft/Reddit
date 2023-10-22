@@ -15,5 +15,4 @@ jobs:
                 username: yeray
                 key: ${{secrets.PRIVATE_KEY}}
                 script: "cd /var/www/html/laravelvps; git pull origin main; npm run build"
-            - name: Reload PHP-FPM
-              run: sudo /usr/sbin/service php8.2-fpm reload
+                run: sudo /usr/sbin/service php8.2-fpm reload
