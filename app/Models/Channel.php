@@ -7,9 +7,16 @@ use Illuminate\Database\Eloquent\Model;
 
 class Channel extends Model
 {
-    use HasFactory;
+  use HasFactory;
 
-    protected $fillable = [
-        'title', 'slug', 'color'
-      ];
+  protected $fillable = [
+    'title',
+    'slug',
+    'color'
+  ];
+
+  public function communitylinks()
+  {
+    return $this->hasMany(CommunityLink::class);
+  }
 }

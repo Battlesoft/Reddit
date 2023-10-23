@@ -18,9 +18,11 @@
                             <li>
                                 <a class="text-decoration-none label label-default p-1 border-rounded text-black rounded" href="/community/{{ $link->channel->slug }}" style="background-color:{{$link->channel->color}}">{{ $link->channel->title }}</a>
                                 <a href="{{ $link->link }}" target="_blank">
-                                    {{ $link->title }}
+                                    {{ $link->title }}  
+                                    
                                 </a>
                                 <small>Contributed by: {{ $link->creator->name }} {{ $link->updated_at->diffForHumans() }}</small>
+                                {{$link->users()->count()}} 
                             </li>
                         @endforeach
                     </ul>
@@ -32,5 +34,6 @@
             </div>
         </div>
         {{ $links->links() }}
+        
     </div>
 @endsection

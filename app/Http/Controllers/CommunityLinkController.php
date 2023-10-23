@@ -20,9 +20,14 @@ class CommunityLinkController extends Controller
 
         if ($channel != null) {
 
-            $links = CommunityLink::where('approved', true)->where('channel_id', $channel->id)->latest('updated_at')->paginate(25);
+            $links = $channel->communitylinks()
+            ->where('approved', true)
+            ->latest('updated_at')
+            ->paginate(25);
         } else {
-            $links = CommunityLink::where('approved', true)->latest('updated_at')->paginate(25);
+            $links = CommunityLink::where('approved', true)
+            ->latest('updated_at')
+            ->paginate(25);
         }
 
         return view('community/index', compact('links', 'channels', 'channel'));
@@ -48,32 +53,34 @@ class CommunityLinkController extends Controller
 
         $data = $request->validated();
 
-            $user = Auth::user();
+        $user = Auth::user();
 
-            $isTrusted = $user->isTrusted();
+        $isTrusted = $user->isTrusted();
 
-            $approved = $isTrusted ? true : false;
+        $approved = $isTrusted ? true : false;
 
-            $data['user_id'] = Auth::id();
+        $data['user_id'] = Auth::id();
 
-            $data['approved'] = $approved;
+        $data['approved'] = $approved;
 
-            if($link->hasAlreadyBeenSubmitted($data['link'])) {
-                if ($approved == 1) {
-                    return back()->with('success', 'el enlace se ha actualizado correctamente');
-                    } else if($approved == 0){
-                    return back()->with('info', 'el enlace ya esta publicado y no estas aprobado');
-                    }else {
-                        return back()->with('info', 'error al cambiar el link');
-                };
-            }else {
-                if ($approved == 1) {
-                    CommunityLink::create($data);
-                    return back()->with('success', 'el enlace se ha creado correctamente');
-                    } else {
-                    return back()->with('info', 'el enlace se ha pasado a revisar correctamente');
-                };
+        if ($link->hasAlreadyBeenSubmitted($data['link'])) {
+            if ($approved == 1) {
+                return back()->with('success', 'el enlace se ha actualizado correctamente');
+            } else if ($approved == 0) {
+                return back()->with('info', 'el enlace ya esta publicado y no estas aprobado');
+            } else {
+                return back()->with('info', 'error al cambiar el link');
             }
+            ;
+        } else {
+            if ($approved == 1) {
+                CommunityLink::create($data);
+                return back()->with('success', 'el enlace se ha creado correctamente');
+            } else {
+                return back()->with('info', 'el enlace se ha pasado a revisar correctamente');
+            }
+            ;
+        }
 
     }
 

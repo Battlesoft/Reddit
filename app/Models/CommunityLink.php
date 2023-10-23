@@ -4,7 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Auth ;
+use Illuminate\Support\Facades\Auth;
+
 class CommunityLink extends Model
 {
   use HasFactory;
@@ -21,8 +22,13 @@ class CommunityLink extends Model
   {
     return $this->belongsTo(User::class, 'user_id');
   }
+  public function users()
+  {
+    return $this->belongsToMany(User::class, 'community_link_users');
+  }
 
-  public function channel() {
+  public function channel()
+  {
     return $this->belongsTo(Channel::class, 'channel_id');
   }
 
