@@ -13,4 +13,13 @@ class CommunityLinkUser extends Model
         return $this->belongsToMany(User::class, 'community_link_users');
         
     }
+
+    public function toggle()
+    {
+        if ($this->id) {
+            $this->delete();
+        } else {
+            $this->save();
+        }
+    }
 }
