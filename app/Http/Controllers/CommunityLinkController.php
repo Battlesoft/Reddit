@@ -8,6 +8,7 @@ use App\Link;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Channel;
 use App\Http\Requests\CommunityLinkForm;
+use App\Queries\CommunityLinksQuery;
 
 class CommunityLinkController extends Controller
 {
@@ -17,7 +18,7 @@ class CommunityLinkController extends Controller
     public function index(Channel $channel = null)
     {
         $channels = Channel::orderBy('title', 'asc')->get();
-
+        
         if ($channel != null) {
 
             $links = $channel->communitylinks()
@@ -33,6 +34,7 @@ class CommunityLinkController extends Controller
         if (request()->exists('popular')) {
             // otra consulta
             $links = CommunityLink::where('approved', 1)->withCount('users')->orderBy('users_count', 'desc')->paginate(25);
+            
         } else {
             if ($channel != null) {
                 $links = $channel->communitylinks()->where('approved', true)->where('channel_id', $channel->id)->latest('updated_at')->paginate(25);
@@ -40,6 +42,10 @@ class CommunityLinkController extends Controller
                 $links = CommunityLink::where('approved', true)->latest('updated_at')->paginate(25);
                 
             }
+        }
+
+        if (request()->exists('busqueda')) {
+            $links = CommunityLinksQuery::getBySearch(trim(request()->get('busqueda')));
         }
 
         return view('community/index', compact('links', 'channels', 'channel'));

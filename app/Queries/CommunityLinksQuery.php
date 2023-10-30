@@ -24,4 +24,10 @@ class CommunityLinksQuery
     {
         return $links->latest('updated_at')->paginate(25);
     }
+
+    public static function getBySearch(String $busqueda)
+    {
+        return CommunityLink::where('title', 'like', '%' . $busqueda . '%')->latest('updated_at')->paginate(25);
+    }
+    
 }
