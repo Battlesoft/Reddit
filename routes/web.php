@@ -39,3 +39,6 @@ Route::get('/home', function () {
  Route::post('votes/{link}', [App\Http\Controllers\CommunityLinkUserController::class, 'store'])->middleware(['auth', 'verified']);
 
  Route::get('community/{channel:slug}', [App\Http\Controllers\CommunityLinkController::class, 'index']);
+ 
+ Route::get('/community-links', 'CommunityLinkController@index');
+ 

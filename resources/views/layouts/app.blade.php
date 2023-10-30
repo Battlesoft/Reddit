@@ -3,6 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.0/font/bootstrap-icons.css">
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -35,6 +36,18 @@
                     <ul class="navbar-nav me-auto">
 
                     </ul>
+
+                    <form action="{{ action('CommunityLinkController@index') }}" method="get" class="form-inline my-2 my-lg-0">
+                        @csrf
+                        @method('GET')
+                        <div class="input-group">
+                            <input class="form-control" type="text" name="search" value="{{ old('search') }}" placeholder="Buscar" aria-label="Buscar" aria-describedby="search-button">
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-success" type="submit" id="search-button">Buscar</button>
+                            </div>
+                        </div>
+                    </form>
+                    
 
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ms-auto">

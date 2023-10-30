@@ -30,6 +30,18 @@ class CommunityLinkController extends Controller
             ->paginate(25);
         }
 
+        if (request()->exists('popular')) {
+            // otra consulta
+            $links = CommunityLink::where('approved', 1)->withCount('users')->orderBy('users_count', 'desc')->paginate(25);
+        } else {
+            if ($channel != null) {
+                $links = $channel->communitylinks()->where('approved', true)->where('channel_id', $channel->id)->latest('updated_at')->paginate(25);
+            } else {
+                $links = CommunityLink::where('approved', true)->latest('updated_at')->paginate(25);
+                
+            }
+        }
+
         return view('community/index', compact('links', 'channels', 'channel'));
     }
 

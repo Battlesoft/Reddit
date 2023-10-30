@@ -5,6 +5,17 @@
         @include('flash-message')
 
         <div class="row">
+
+            <ul class="nav">
+                <li class="nav-item">
+                    <a class="nav-link {{ request()->exists('popular') ? '' : 'disabled' }}" href="{{ request()->url() }}">Most
+                        recent</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {{ request()->exists('popular') ? 'disabled' : '' }}" href="?popular">Most popular</a>
+                </li>
+            </ul>  
+            
             {{-- Left column to show all the links in the DB --}}
             <div class="col-md-8">
 
@@ -31,6 +42,7 @@
                                         class="btn btn-secondary {{ Auth::check() && Auth::user()->votedFor($link) ? 'btn-success' : 'btn-secondary' }}"
                                         {{ Auth::guest() ? 'disabled' : '' }}>
                                         {{ $link->users()->count() }}
+                                        <i class="bi bi-hand-thumbs-up-fill"></i>
                                     </button>
                                 </form>
                             </li>
@@ -43,7 +55,7 @@
                 @include('partials.add-link')
             </div>
         </div>
-        {{ $links->links() }}
+        {{ $links->appends($_GET)->links() }}
 
     </div>
 @endsection
