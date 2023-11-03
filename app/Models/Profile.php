@@ -11,6 +11,10 @@ class Profile extends Model
 
     public function user()
     {
-    return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class);
     }
+
+    protected $fillable = ['user_id', 'imageUpload']; // Agrega 'user_id' si no está presente
+
+
 }

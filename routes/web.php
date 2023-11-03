@@ -42,3 +42,11 @@ Route::get('/home', function () {
  
  Route::get('/community-links', 'CommunityLinkController@index');
  
+ // Rutas para el perfil de usuario
+ Route::resource('profile', 'ProfileController');
+
+// Ruta para la edición de perfil
+Route::post('/profile/store', [App\Http\Controllers\ProfileController::class, 'store'])->middleware(['auth'])->name('profile.edit');
+Route::get('/profile', [App\Http\Controllers\ProfileController::class,'index'])->middleware(['auth'])->name('profile');
+
+
