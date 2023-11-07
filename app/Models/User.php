@@ -67,4 +67,10 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->trusted;
     }
 
+    static $rules = [
+        'name',
+        'email',
+        'password',
+    ];
+
 }
