@@ -33,8 +33,11 @@
                     aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-
-
+                @auth
+                    @can('viewDashboard', '\App\Models\User')
+                        <li><a href="/users">Dashboard</a></li>
+                    @endcan
+                @endauth
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav me-auto">

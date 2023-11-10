@@ -50,4 +50,6 @@ Route::post('/profile/store', [App\Http\Controllers\ProfileController::class, 's
 Route::get('/profile', [App\Http\Controllers\ProfileController::class,'index'])->middleware(['auth'])->name('profile');
 
 
-Route::resource('users', 'App\Http\Controllers\UserController')->middleware(['auth', 'verified']);
+Route::resource('users', 'App\Http\Controllers\UserController')->middleware(['auth', 'verified'])->middleware('can:viewDashboard,App\Models\User');
+
+
